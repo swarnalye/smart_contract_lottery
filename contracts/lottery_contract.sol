@@ -28,7 +28,7 @@ contract Lottery is Ownable, VRFConsumerBaseV2 {
     // this limit based on the network that you select, the size of the request,
     // and the processing of the callback request in the fulfillRandomWords()
     // function.
-    uint32 callbackGasLimit = 100000;
+    uint32 callbackGasLimit = 150000;
 
     // The default is 3, but you can set this higher.
     uint16 requestConfirmations = 3;
@@ -131,6 +131,9 @@ contract Lottery is Ownable, VRFConsumerBaseV2 {
         address winnerAddress = lotteryEntryOwner[winnerId];
         ownerPrizeAmount[winnerAddress] += poolPrizeAmount;
         emit newWinner(winnerAddress, poolPrizeAmount);
+    }
+
+    function startNewRound() external onlyOwner {
         clearVariablesForNewRound();
         _changeState(LotteryState.Open);
     }
@@ -146,7 +149,7 @@ contract Lottery is Ownable, VRFConsumerBaseV2 {
     function withdrawPrizeMoney() public payable {
         require(
             ownerPrizeAmount[msg.sender] > 0,
-            "Positive balance required for withdrawal"
+            "You don't have anything to withdraw!"
         );
         require(ownerPrizeAmount[msg.sender] <= address(this).balance);
         uint256 prizeBalance = ownerPrizeAmount[msg.sender];

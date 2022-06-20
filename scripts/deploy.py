@@ -13,14 +13,14 @@ def main():
 
 
 def deploy_lottery():
-    account = get_account(name="DEV00")
+    account = get_account()
     coordinator, sub_id = get_vrf_coordinator()
     lottery = Lottery.deploy(
         coordinator.address,
-        3,
+        2,
         sub_id,
         {"from": account},
         publish_source=config["networks"][network.show_active()].get("verify", False),
     )
-    coordinator.addConsumer(sub_id, lottery.address, {"from": get_account()})
+    coordinator.addConsumer(sub_id, lottery.address, {"from": get_account})
     return lottery

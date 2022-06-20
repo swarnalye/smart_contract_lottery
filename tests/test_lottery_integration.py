@@ -36,6 +36,3 @@ def test_all():
         assert lottery.ownerPrizeAmount[get_account(name="DEV03").address] > 0
         lottery.withdrawPrizeMoney({"from": get_account(name="DEV03")})
         assert lottery.ownerPrizeAmount[get_account(name="DEV03").address] == 0
-
-
-# 0xB64107Edd823F6B6E57FF99C4d8e2c7394C2e00E
